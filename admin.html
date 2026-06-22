@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>カレンダー管理 — TAMANO ART CLASS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Shippori+Mincho:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Shippori Mincho', serif;
+      background: #f0ede8;
+      color: #3a3530;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.3rem;
+      color: #3a3530;
+    }
+    .subtitle {
+      font-size: 0.8rem;
+      color: #8a8078;
+      margin-bottom: 2rem;
+    }
+
+    /* 月ナビ */
+    .nav {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .nav-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem; letter-spacing: 0.1em;
+    }
+    .nav-btn {
+      background: none; border: 1px solid #d4a5aa;
+      color: #d4a5aa; width: 32px; height: 32px;
+      border-radius: 50%; cursor: pointer; font-size: 1.2rem;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover { background: #d4a5aa; color: white; }
+
+    /* グリッド */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      max-width: 700px;
+    }
+    .col-head {
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem; letter-spacing: 0.12em;
+      padding: 0.5rem;
+      border-radius: 6px;
+      font-weight: 300;
+    }
+    .col-head.sat { background: #eef4f1; color: #4a7860; }
+    .col-head.sun { background: #fdf0f1; color: #a06070; }
+
+    /* 日付カード */
+    .day-card {
+      background: white;
+      border-radius: 10px;
+      padding: 12px 14px;
+      box-shadow: 0 1px 6px rgba(58,53,48,0.08);
+    }
+    .day-date {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+      color: #3a3530;
+    }
+    .day-card.sat .day-date { color: #4a7860; }
+    .day-card.sun .day-date { color: #a06070; }
+
+    /* スロット行 */
+    .slot-row {
+      display: flex; align-items: center;
+      gap: 8px; margin-bottom: 6px;
+    }
+    .slot-label {
+      font-size: 0.7rem; width: 52px; color: #7a7068; flex-shrink: 0;
+    }
+    .slot-class {
+      font-size: 0.6rem; letter-spacing: 0.04em;
+      padding: 1px 5px; border-radius: 3px; flex-shrink: 0;
+    }
+    .slot-class.kids { background: #f0d0d4; color: #804050; }
+    .slot-class.atelier { background: #c8dcd4; color: #3a6054; }
+
+    /* トグルボタン */
+    .toggle-group { display: flex; gap: 4px; }
+    .toggle-btn {
+      border: none; border-radius: 4px; cursor: pointer;
+      font-size: 0.8rem; font-weight: bold;
+      width: 32px; height: 28px;
+      transition: all 0.15s;
+      opacity: 0.3;
+    }
+    .toggle-btn.active { opacity: 1; }
+    .toggle-btn.maru  { background: #d4ead8; color: #2a7040; }
+    .toggle-btn.sankaku { background: #fde8c4; color: #a06010; }
+    .toggle-btn.batsu { background: #f5c8c8; color: #c03030; }
+    .toggle-btn.kyu   { background: #e0dbd4; color: #6a6060; }
+
+    /* 保存ボタン */
+    /* 今月セクション */
+    .monthly-section {
+      max-width: 700px;
+      margin-top: 3rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid #d8d2cc;
+    }
+    .monthly-section h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem; font-weight: 300;
+      letter-spacing: 0.15em; margin-bottom: 1.5rem;
+    }
+    .monthly-tabs {
+      display: flex; gap: 8px; margin-bottom: 1.2rem;
+    }
+    .monthly-tab {
+      padding: 0.4rem 1.2rem; border-radius: 20px;
+      border: none; cursor: pointer; font-family: 'Shippori Mincho', serif;
+      font-size: 0.82rem; transition: all 0.2s;
+    }
+    .monthly-tab.kids   { background: #f0d0d4; color: #804050; }
+    .monthly-tab.atelier { background: #c8dcd4; color: #3a6054; }
+    .monthly-tab.active { opacity: 1; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+    .monthly-tab:not(.active) { opacity: 0.45; }
+    .monthly-form { display: none; }
+    .monthly-form.active { display: block; }
+    .m-field { margin-bottom: 1rem; }
+    .m-label {
+      display: block; font-size: 0.75rem; color: #7a7068;
+      letter-spacing: 0.08em; margin-bottom: 0.3rem;
+    }
+    .m-input, .m-textarea {
+      width: 100%; padding: 0.6rem 0.9rem;
+      border: 1px solid #c8c2ba; border-radius: 6px;
+      background: white; font-family: 'Shippori Mincho', serif;
+      font-size: 0.88rem; color: #3a3530; outline: none;
+      transition: border-color 0.2s;
+    }
+    .m-input:focus, .m-textarea:focus { border-color: #d4a5aa; }
+    .m-textarea { height: 90px; resize: vertical; }
+    .m-hint { font-size: 0.72rem; color: #aaa; margin-top: 0.3rem; }
+
+    .save-bar {
+      position: sticky; bottom: 0;
+      background: #f0ede8;
+      padding: 1rem 0 0.5rem;
+      max-width: 700px;
+      display: flex; gap: 1rem; align-items: center;
+    }
+    .save-btn {
+      background: #d4a5aa; color: white;
+      border: none; border-radius: 6px;
+      padding: 0.7rem 2rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem; letter-spacing: 0.15em;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .save-btn:hover { background: #c49098; }
+    .save-msg {
+      font-size: 0.8rem; color: #8fa89a;
+      opacity: 0; transition: opacity 0.4s;
+    }
+    .save-msg.show { opacity: 1; }
+
+    .legend {
+      font-size: 0.75rem; color: #8a8078;
+      margin-bottom: 1.2rem;
+      display: flex; gap: 1rem; flex-wrap: wrap;
+    }
+    .legend span { display: flex; align-items: center; gap: 4px; }
+  </style>
+</head>
+<body>
+
+  <h1>クラスカレンダー 管理</h1>
+  <p class="subtitle">各時間帯をクリックして空き状況を変更 → 「保存する」を押すとサイトに反映されます</p>
+
+  <div class="legend">
+    <span><strong style="color:#2a7040;">○</strong> 空きあり</span>
+    <span><strong style="color:#a06010;">△</strong> 残りわずか</span>
+    <span><strong style="color:#c03030;">×</strong> 満席</span>
+    <span><strong style="color:#6a6060;">休</strong> クラスなし</span>
+  </div>
+
+  <div class="nav">
+    <button class="nav-btn" onclick="changeMonth(-1)">&#8249;</button>
+    <span class="nav-title" id="nav-title"></span>
+    <button class="nav-btn" onclick="changeMonth(1)">&#8250;</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <!-- ── 今週のテーマ 編集 ── -->
+  <div class="monthly-section">
+    <h2>今週のテーマ</h2>
+    <p style="font-size:0.8rem;color:#8a8078;margin-bottom:1.2rem;">期間を選んで、KIDS・Atelier それぞれのテーマを入力してください。<br>日付が来ると自動でサイトに表示されます。</p>
+
+    <!-- バックアップからインポート -->
+    <div style="background:#f5f0ec;border-radius:8px;padding:1rem 1.2rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+      <div>
+        <p style="font-size:0.78rem;color:#5a524a;margin-bottom:0.2rem;">管理アプリのバックアップからKIDSテーマを一括インポート</p>
+        <p style="font-size:0.7rem;color:#aaa;">artschool-backup-XXXX-XX-XX.json を選択してください</p>
+      </div>
+      <label style="cursor:pointer;background:#d4a5aa;color:white;padding:0.5rem 1.2rem;border-radius:6px;font-family:'Cormorant Garamond',serif;font-size:0.88rem;letter-spacing:0.12em;white-space:nowrap;">
+        JSONを読み込む
+        <input type="file" accept=".json" onchange="importFromBackup(event)" style="display:none;">
+      </label>
+      <span id="import-msg" style="font-size:0.78rem;color:#8fa89a;opacity:0;transition:opacity 0.4s;"></span>
+    </div>
+
+    <!-- 期間セレクター -->
+    <div style="margin-bottom:1.2rem;">
+      <label class="m-label">期間を選択</label>
+      <select class="m-input" id="period-select" onchange="loadPeriod()" style="max-width:280px;cursor:pointer;"></select>
+    </div>
+
+    <div class="monthly-tabs">
+      <button class="monthly-tab kids active" onclick="switchTab('kids')">for KIDS</button>
+      <button class="monthly-tab atelier" onclick="switchTab('atelier')">Atelier Class</button>
+    </div>
+
+    <div class="monthly-form active" id="form-kids">
+      <div class="m-field">
+        <label class="m-label">テーマ</label>
+        <input class="m-input" id="kids-theme" type="text" placeholder="例：うちわ・サンダル">
+      </div>
+      <div class="m-field">
+        <label class="m-label">詳細・説明</label>
+        <textarea class="m-textarea" id="kids-detail" placeholder="内容や持ち物など"></textarea>
+      </div>
+      <div class="m-field">
+        <label class="m-label">写真ファイル名</label>
+        <input class="m-input" id="kids-photo" type="text" placeholder="例：IMG_3647.jpg">
+        <p class="m-hint">アート教室写真フォルダ内のファイル名を入力</p>
+      </div>
+    </div>
+
+    <div class="monthly-form" id="form-atelier">
+      <div class="m-field">
+        <label class="m-label">テーマ</label>
+        <input class="m-input" id="atelier-theme" type="text" placeholder="例：モネの模写">
+      </div>
+      <div class="m-field">
+        <label class="m-label">詳細・説明</label>
+        <textarea class="m-textarea" id="atelier-detail" placeholder="内容や持ち物など"></textarea>
+      </div>
+      <div class="m-field">
+        <label class="m-label">写真ファイル名</label>
+        <input class="m-input" id="atelier-photo" type="text" placeholder="例：アトリエクラス/IMG_4346_fixed.jpg">
+        <p class="m-hint">アート教室写真フォルダ内のファイル名を入力</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="save-bar">
+    <button class="save-btn" onclick="save()">保存する</button>
+    <span class="save-msg" id="save-msg">✓ 保存しました</span>
+  </div>
+
+  <script>
+    // 状態管理
+    let exceptions = JSON.parse(localStorage.getItem('tamano_cal_exceptions') || '{}');
+    let current = new Date();
+    current.setDate(1);
+
+    function pad(n){ return String(n).padStart(2,'0'); }
+
+    const SLOTS = {
+      sat: [
+        { key:'k10', label:'10:00', cls:'kids',    name:'KIDS',    endH:11, endM:30 },
+        { key:'k13', label:'13:30', cls:'kids',    name:'KIDS',    endH:15, endM:0  },
+        { key:'k15', label:'15:30', cls:'kids',    name:'KIDS',    endH:17, endM:0  },
+        { key:'a15', label:'15:30', cls:'atelier', name:'Atelier', endH:17, endM:30 },
+        { key:'a19', label:'19:00', cls:'atelier', name:'Atelier', endH:21, endM:0  },
+      ],
+      sun: [
+        { key:'k10', label:'10:00', cls:'kids',    name:'KIDS',    endH:11, endM:30 },
+        { key:'k13', label:'13:30', cls:'kids',    name:'KIDS',    endH:15, endM:0  },
+        { key:'k15', label:'15:30', cls:'kids',    name:'KIDS',    endH:17, endM:0  },
+        { key:'a15', label:'15:30', cls:'atelier', name:'Atelier', endH:17, endM:30 },
+      ],
+    };
+
+    function isFinished(year, month, day, endH, endM){
+      const now = new Date();
+      const end = new Date(year, month, day, endH, endM);
+      return now >= end;
+    }
+
+    const STATUSES = ['○','△','×','休'];
+
+    function getStatus(dateKey, slotKey){
+      return (exceptions[dateKey] && exceptions[dateKey][slotKey]) || '○';
+    }
+
+    function setStatus(dateKey, slotKey, val){
+      if(!exceptions[dateKey]) exceptions[dateKey] = {};
+      exceptions[dateKey][slotKey] = val;
+      // ○だけなら削除（デフォルトなので）
+      const allMaru = Object.values(exceptions[dateKey]).every(v => v === '○');
+      if(allMaru) delete exceptions[dateKey];
+    }
+
+    function nextStatus(current){
+      const i = STATUSES.indexOf(current);
+      return STATUSES[(i+1) % STATUSES.length];
+    }
+
+    function statusClass(s){
+      if(s==='△') return 'sankaku';
+      if(s==='×') return 'batsu';
+      if(s==='休') return 'kyu';
+      return 'maru';
+    }
+
+    function makeCard(d, isSat){
+      const dow = isSat ? 'sat' : 'sun';
+      const year = current.getFullYear();
+      const month = current.getMonth();
+      const dateKey = year+'-'+pad(month+1)+'-'+pad(d);
+
+      const card = document.createElement('div');
+      card.className = 'day-card ' + dow;
+
+      const dateEl = document.createElement('div');
+      dateEl.className = 'day-date';
+      dateEl.textContent = (month+1) + '月' + d + '日（' + (isSat?'土':'日') + '）';
+      card.appendChild(dateEl);
+
+      SLOTS[dow].forEach(slot => {
+        const finished = isFinished(year, month, d, slot.endH, slot.endM);
+
+        const row = document.createElement('div');
+        row.className = 'slot-row';
+        if(finished) row.style.opacity = '0.38';
+
+        const lbl = document.createElement('span');
+        lbl.className = 'slot-label';
+        lbl.textContent = slot.label;
+
+        const cls = document.createElement('span');
+        cls.className = 'slot-class ' + slot.cls;
+        cls.textContent = slot.name;
+
+        const btn = document.createElement('button');
+        if(finished){
+          // 終了済み：×固定・操作不可
+          btn.className = 'toggle-btn batsu active';
+          btn.textContent = '×';
+          btn.disabled = true;
+          btn.style.cursor = 'default';
+        } else {
+          const st = getStatus(dateKey, slot.key);
+          btn.className = 'toggle-btn ' + statusClass(st) + ' active';
+          btn.textContent = st;
+          btn.onclick = () => {
+            const cur = btn.textContent;
+            const next = nextStatus(cur);
+            btn.textContent = next;
+            btn.className = 'toggle-btn ' + statusClass(next) + ' active';
+            setStatus(dateKey, slot.key, next);
+          };
+        }
+
+        row.appendChild(lbl);
+        row.appendChild(cls);
+        row.appendChild(btn);
+        card.appendChild(row);
+      });
+
+      return card;
+    }
+
+    function render(){
+      const year = current.getFullYear();
+      const month = current.getMonth();
+      document.getElementById('nav-title').textContent = year + '年 ' + (month+1) + '月';
+
+      const daysInMonth = new Date(year, month+1, 0).getDate();
+      const saturdays = [], sundays = [];
+      for(let d=1; d<=daysInMonth; d++){
+        const dow = new Date(year, month, d).getDay();
+        if(dow===6) saturdays.push(d);
+        if(dow===0) sundays.push(d);
+      }
+
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+
+      const hSat = document.createElement('div');
+      hSat.className = 'col-head sat'; hSat.textContent = '土曜日';
+      grid.appendChild(hSat);
+      const hSun = document.createElement('div');
+      hSun.className = 'col-head sun'; hSun.textContent = '日曜日';
+      grid.appendChild(hSun);
+
+      const rows = Math.max(saturdays.length, sundays.length);
+      for(let i=0; i<rows; i++){
+        if(i < saturdays.length){
+          grid.appendChild(makeCard(saturdays[i], true));
+        } else {
+          grid.appendChild(document.createElement('div'));
+        }
+        if(i < sundays.length){
+          grid.appendChild(makeCard(sundays[i], false));
+        } else {
+          grid.appendChild(document.createElement('div'));
+        }
+      }
+    }
+
+    function changeMonth(dir){
+      current.setMonth(current.getMonth()+dir);
+      render();
+    }
+
+    // ── 今週のテーマ 管理 ──────────────────────────
+    const weeklyData = JSON.parse(localStorage.getItem('tamano_weekly') || '{}');
+
+    // 今日から6ヶ月先までの2週ごと期間リストを生成
+    function buildPeriods(){
+      const periods = [];
+      const now = new Date();
+      for(let mo = 0; mo <= 5; mo++){
+        const y = new Date(now.getFullYear(), now.getMonth() + mo, 1).getFullYear();
+        const m = new Date(now.getFullYear(), now.getMonth() + mo, 1).getMonth() + 1;
+        ['12','34'].forEach(p => {
+          const w = p === '12' ? '第1・2週' : '第3・4週';
+          periods.push({
+            key: y + '-' + String(m).padStart(2,'0') + '-' + p,
+            label: y + '年' + m + '月 ' + w,
+          });
+        });
+      }
+      return periods;
+    }
+
+    function initPeriodSelect(){
+      const sel = document.getElementById('period-select');
+      buildPeriods().forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.key;
+        opt.textContent = p.label;
+        sel.appendChild(opt);
+      });
+      loadPeriod();
+    }
+
+    function loadPeriod(){
+      const key = document.getElementById('period-select').value;
+      const d = weeklyData[key] || {};
+      ['kids','atelier'].forEach(cls => {
+        const info = d[cls] || {};
+        document.getElementById(cls+'-theme').value  = info.theme  || '';
+        document.getElementById(cls+'-detail').value = info.detail || '';
+        document.getElementById(cls+'-photo').value  = info.photo  || '';
+      });
+    }
+
+    function savePeriod(){
+      const key = document.getElementById('period-select').value;
+      weeklyData[key] = {
+        kids: {
+          theme:  document.getElementById('kids-theme').value.trim(),
+          detail: document.getElementById('kids-detail').value.trim(),
+          photo:  document.getElementById('kids-photo').value.trim(),
+        },
+        atelier: {
+          theme:  document.getElementById('atelier-theme').value.trim(),
+          detail: document.getElementById('atelier-detail').value.trim(),
+          photo:  document.getElementById('atelier-photo').value.trim(),
+        },
+      };
+      localStorage.setItem('tamano_weekly', JSON.stringify(weeklyData));
+    }
+
+    function switchTab(cls){
+      document.querySelectorAll('.monthly-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.monthly-form').forEach(f => f.classList.remove('active'));
+      document.querySelector('.monthly-tab.' + cls).classList.add('active');
+      document.getElementById('form-' + cls).classList.add('active');
+    }
+
+    function save(){
+      localStorage.setItem('tamano_cal_exceptions', JSON.stringify(exceptions));
+      savePeriod();
+      const msg = document.getElementById('save-msg');
+      msg.classList.add('show');
+      setTimeout(() => msg.classList.remove('show'), 2500);
+    }
+
+    // バックアップJSONからKIDSテーマをインポート
+    function importFromBackup(event){
+      const file = event.target.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e){
+        try {
+          const raw = JSON.parse(e.target.result);
+          const memos = JSON.parse(raw.art3_memos || '{}');
+          let count = 0;
+          Object.entries(memos).forEach(([k, theme]) => {
+            // "2026-07::1" → "2026-07-12", "2026-07::2" → "2026-07-34"
+            const match = k.match(/^(\d{4}-\d{2})::(\d)$/);
+            if(!match) return;
+            const ym = match[1];
+            const half = match[2] === '1' ? '12' : '34';
+            const periodKey = ym + '-' + half;
+            if(!weeklyData[periodKey]) weeklyData[periodKey] = {};
+            if(!weeklyData[periodKey].kids) weeklyData[periodKey].kids = {};
+            weeklyData[periodKey].kids.theme = theme;
+            count++;
+          });
+          localStorage.setItem('tamano_weekly', JSON.stringify(weeklyData));
+          // 現在選択中の期間を再読み込み
+          loadPeriod();
+          const msg = document.getElementById('import-msg');
+          msg.textContent = '✓ ' + count + '件のテーマを読み込みました';
+          msg.style.opacity = '1';
+          setTimeout(() => msg.style.opacity = '0', 3000);
+        } catch(err) {
+          alert('読み込みに失敗しました。正しいバックアップファイルを選択してください。');
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = ''; // 同じファイルを再選択できるようにリセット
+    }
+
+    initPeriodSelect();
+    render();
+  </script>
+</body>
+</html>

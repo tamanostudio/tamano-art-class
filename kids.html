@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>for KIDS | TAMANO ART CLASS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Shippori+Mincho:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Shippori Mincho', 'Hiragino Mincho ProN', serif;
+      background: #fdf0f1;
+      color: #3a3530;
+      line-height: 1.85;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      padding: 1.1rem 2.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(232, 229, 224, 0.93);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(58,53,48,0.08);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      letter-spacing: 0.18em;
+      color: #3a3530;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      color: #7a7068;
+      transition: color 0.25s;
+    }
+    .nav-links a:hover { color: #3a3530; }
+    .nav-dropdown { position: relative; }
+    .nav-dropdown-menu {
+      display: none;
+      position: absolute; top: calc(100% + 4px); left: 50%;
+      transform: translateX(-50%);
+      background: rgba(253,240,241,0.97);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(212,165,170,0.2);
+      border-radius: 6px;
+      padding: 0.5rem 0;
+      min-width: 160px;
+      box-shadow: 0 8px 24px rgba(58,53,48,0.1);
+      z-index: 200;
+    }
+    .nav-dropdown-menu.open { display: block; }
+    .nav-dropdown-menu a { display: block; padding: 0.55rem 1.2rem; font-size: 0.78rem; white-space: nowrap; }
+    .nav-dropdown-menu a:hover { background: rgba(212,165,170,0.12); }
+
+    /* ── HERO ── */
+    .hero {
+      height: 55vh;
+      position: relative;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 0;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('IMG_3647.jpg');
+      background-size: cover;
+      background-position: center 20%;
+      filter: brightness(0.82);
+    }
+    .hero-content {
+      position: relative; z-index: 1;
+      text-align: center; color: white;
+    }
+    .hero-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.35em;
+      color: rgba(255,255,255,0.65);
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 300;
+      letter-spacing: 0.1em;
+    }
+    .hero-sub {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.7);
+      margin-top: 0.6rem;
+      letter-spacing: 0.15em;
+    }
+
+    /* ── SHARED ── */
+    section { padding: 5rem 2rem; }
+    .container { max-width: 860px; margin: 0 auto; }
+    .section-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.35em;
+      color: #c4808c;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      font-weight: 300;
+      line-height: 1.3;
+      margin-bottom: 1.5rem;
+    }
+    .divider {
+      width: 36px; height: 3px;
+      background: #d4a5aa;
+      border-radius: 2px;
+      margin: 1.5rem 0;
+    }
+    p { font-size: 0.92rem; color: #5a524a; margin-bottom: 1.2rem; line-height: 1.95; }
+
+    /* ── ABOUT ── */
+    .about { background: #fdf0f1; }
+
+    /* ── THEMES ── */
+    .themes { background: #f9e4e6; }
+    .themes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .theme-card {
+      border-radius: 10px;
+      padding: 1.5rem;
+    }
+    .theme-card:nth-child(1),
+    .theme-card:nth-child(2),
+    .theme-card:nth-child(3),
+    .theme-card:nth-child(4),
+    .theme-card:nth-child(5),
+    .theme-card:nth-child(6) { background: #fff5f6; }
+    .theme-card h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 400;
+      color: #3a3530;
+      margin-bottom: 0.5rem;
+    }
+    .theme-card p { font-size: 0.82rem; margin-bottom: 0; }
+
+    /* ── GALLERY ── */
+    .gallery { background: #fdf0f1; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.8rem;
+      margin-top: 2.5rem;
+    }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; border-radius: 8px; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s; }
+    .gallery-item:hover img { transform: scale(1.05); }
+
+    /* ── SCHEDULE ── */
+    .schedule { background: #f9e4e6; }
+    .schedule-table { width: 100%; margin-top: 2rem; border-collapse: collapse; }
+    .schedule-table th {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.15em;
+      color: #c4808c;
+      text-align: left;
+      padding: 0.6rem 1rem;
+      border-bottom: 2px solid #d4a5aa;
+    }
+    .schedule-table td {
+      font-size: 0.88rem;
+      color: #5a524a;
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid #eecdd0;
+    }
+    .schedule-table tr:last-child td { border-bottom: none; }
+    .price { font-size: 1rem; color: #c4808c; font-weight: 500; }
+
+    /* ── ITEMS ── */
+    .items { background: #fdf0f1; }
+    .items-list { margin-top: 1.5rem; }
+    .items-list li {
+      font-size: 0.9rem;
+      color: #5a524a;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid #eecdd0;
+      list-style: none;
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+    .items-list li::before {
+      content: '';
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #d4a5aa;
+      flex-shrink: 0;
+    }
+    .items-list li:last-child { border-bottom: none; }
+
+    /* ── FAQ ── */
+    .faq { background: #f9e4e6; }
+    .faq-list { margin-top: 2rem; }
+    .faq-item { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #eecdd0; }
+    .faq-item:last-child { border-bottom: none; margin-bottom: 0; }
+    .faq-q {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 400;
+      color: #3a3530;
+      margin-bottom: 0.6rem;
+      display: flex; gap: 0.8rem;
+    }
+    .faq-q::before { content: 'Q.'; color: #c4808c; flex-shrink: 0; font-weight: 500; }
+    .faq-a { font-size: 0.88rem; color: #5a524a; padding-left: 1.5rem; }
+
+    /* ── CTA ── */
+    .cta {
+      background: #d4a5aa;
+      text-align: center;
+      padding: 5rem 2rem;
+      color: white;
+    }
+    .cta h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 300;
+      margin-bottom: 1rem;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.12);
+    }
+    .cta p { color: rgba(255,255,255,0.9); font-size: 0.88rem; margin-bottom: 2rem; }
+    .btn {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      background: white;
+      color: #c47a8a;
+      text-decoration: none;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      letter-spacing: 0.2em;
+      border-radius: 4px;
+      transition: all 0.25s;
+    }
+    .btn:hover { background: #3a3530; color: white; }
+    .btn-outline {
+      display: inline-block;
+      padding: 0.9rem 2rem;
+      border: 1px solid rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      border-radius: 4px;
+      margin-left: 1rem;
+      transition: all 0.25s;
+    }
+    .btn-outline:hover { border-color: white; color: white; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #3a3530;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 2.5rem 2rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    footer a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 0.8rem; }
+
+    .nav-back { display: none; }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-back {
+        display: flex; align-items: center; gap: 0.4rem;
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 0.8rem; letter-spacing: 0.1em;
+        color: #8fa89a; text-decoration: none;
+      }
+      .themes-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .btn-outline { margin-left: 0; margin-top: 1rem; display: block; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-logo" href="index.html">TAMANO ART CLASS</a>
+    <a class="nav-back" href="index.html">← トップへ</a>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li class="nav-dropdown">
+        <a href="index.html#classes" onclick="toggleDropdown(event)">Classes ▾</a>
+        <div class="nav-dropdown-menu" id="classes-menu">
+          <a href="kids.html">for KIDS</a>
+          <a href="atelier.html">Atelier Class</a>
+        </div>
+      </li>
+      <li><a href="index.html#schedule">Schedule</a></li>
+      <li><a href="index.html#gallery">Gallery</a></li>
+      <li><a href="index.html#contact">体験申込</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <p class="hero-label">TAMANO ART CLASS</p>
+      <h1 class="hero-title">for KIDS</h1>
+      <p class="hero-sub">5歳〜小学生</p>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about">
+    <div class="container">
+      <p class="section-label">About</p>
+      <h2 class="section-title" style="font-size:clamp(1.55rem,3.5vw,2.4rem);white-space:nowrap;">こどものためのアートクラス</h2>
+      <div class="divider"></div>
+      <p>絵を描くことや、何かを創ることが好きなこどもたちにぴったりのクラスです。世界中のアーティストの作品を紹介したり、そこから自分の表現に変えていく方法を学びます。ルールや答えではなく、自身の表現をアートで行うことを目的としています。情報や勉強などインプットが多い現代で、自分自身のアウトプットは心の開放やストレス発散にもつながります。楽しくアートを学ぶ、こどもたちのためのクラスです。</p>
+    </div>
+  </section>
+
+  <!-- THEMES -->
+  <section class="themes">
+    <div class="container">
+      <p class="section-label">Contents</p>
+      <h2 class="section-title">クラスでやること</h2>
+      <div class="divider"></div>
+      <p>毎回異なるテーマで、様々な技法やアーティストの作風に触れながら作品を作ります。</p>
+      <div class="themes-grid">
+        <div class="theme-card">
+          <h4>世界のアーティスト紹介</h4>
+          <p>ピカソ・モネ・カンディンスキーなど世界の有名アーティストの作品を鑑賞し、そのスタイルを自分なりに表現します。</p>
+        </div>
+        <div class="theme-card">
+          <h4>様々な技法・素材</h4>
+          <p>絵具・クレヨン・コラージュ・粘土・彫刻など、毎回異なる素材や技法を体験します。</p>
+        </div>
+        <div class="theme-card">
+          <h4>立体・工作</h4>
+          <p>ダンボール・紙粘土・ワイヤーなど、平面だけでなく立体作品も制作します。季節のテーマも取り入れます。</p>
+        </div>
+        <div class="theme-card">
+          <h4>デザイン・パターン</h4>
+          <p>色の組み合わせやパターンを学びながら、デザイン的な感覚も育てます。</p>
+        </div>
+        <div class="theme-card">
+          <h4>展示会</h4>
+          <p>生徒の作品を展示する発表の場を設けています。自分の作品を大切な人に見てもらう、特別な体験です。</p>
+        </div>
+        <div class="theme-card">
+          <h4>季節のイベント作品</h4>
+          <p>ハロウィン・クリスマスなど季節に合わせた特別なテーマの作品も制作します。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 今週のテーマ -->
+  <section style="background:#fdf0f1;padding:5rem 2rem;">
+    <div class="container">
+      <p class="section-label">This Week</p>
+      <h2 class="section-title">今週のテーマ</h2>
+      <p id="kids-period" style="font-size:0.8rem;color:#d4a5aa;letter-spacing:0.1em;margin-bottom:1.5rem;font-family:'Shippori Mincho',serif;"></p>
+      <div id="kids-weekly" style="background:white;border-radius:10px;overflow:hidden;box-shadow:0 2px 16px rgba(212,165,170,0.15);max-width:640px;">
+        <!-- JS で描画 -->
+      </div>
+    </div>
+  </section>
+  <script>
+  (function(){
+    function getCurrentPeriodKey(){
+      const now = new Date();
+      for(let offset = 0; offset <= 60; offset++){
+        const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + offset);
+        const dow = d.getDay();
+        if(dow !== 0 && dow !== 6) continue;
+        const weekNum = Math.ceil(d.getDate() / 7);
+        const period = (weekNum <= 2) ? '12' : '34';
+        const ym = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+        return { key: ym + '-' + period, year: d.getFullYear(), month: d.getMonth()+1, period };
+      }
+    }
+    const data = JSON.parse(localStorage.getItem('tamano_weekly') || '{}');
+    const cur = getCurrentPeriodKey();
+    const info = (data[cur.key] || {}).kids || {};
+    const w = cur.period === '12' ? '第1・2週' : '第3・4週';
+    document.getElementById('kids-period').textContent = cur.year + '年' + cur.month + '月 ' + w;
+    const wrap = document.getElementById('kids-weekly');
+    let html = '';
+    if(info.photo) html += `<img src="${info.photo}" alt="今週のテーマ" onclick="openLightbox(this.src)" style="width:100%;height:220px;object-fit:cover;display:block;filter:brightness(0.88);cursor:zoom-in;">`;
+    html += `<div style="padding:1.8rem 2rem;">`;
+    if(info.theme){
+      html += `<h3 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;color:#3a3530;margin-bottom:0.8rem;">${info.theme}</h3>`;
+    } else {
+      html += `<h3 style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:300;color:#ccc;margin-bottom:0.8rem;">テーマは近日公開</h3>`;
+    }
+    if(info.detail) html += `<p style="font-size:0.88rem;color:#5a524a;line-height:1.9;">${info.detail}</p>`;
+    html += `</div>`;
+    wrap.innerHTML = html;
+  })();
+  </script>
+
+  <!-- GALLERY -->
+  <section class="gallery">
+    <div class="container">
+      <p class="section-label">Gallery</p>
+      <h2 class="section-title">作品・授業の様子</h2>
+      <div class="gallery-grid">
+        <div class="gallery-item"><img src="IMG_4397.jpg" alt="絵の具で制作"></div>
+        <div class="gallery-item"><img src="IMG_4388.jpg" alt="授業の様子"></div>
+        <div class="gallery-item"><img src="IMG_3362.jpg" alt="ケーキ制作"></div>
+        <div class="gallery-item"><img src="IMG_3176.JPG" alt="カラフルな作品"></div>
+        <div class="gallery-item"><img src="IMG_4403.jpg" alt="工作制作"></div>
+        <div class="gallery-item"><img src="IMG_3419.jpg" alt="ケーキ作品"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCHEDULE -->
+  <section class="schedule">
+    <div class="container">
+      <p class="section-label">Schedule & Price</p>
+      <h2 class="section-title">スケジュールと料金</h2>
+      <div class="divider"></div>
+      <table class="schedule-table">
+        <tr><th>クラス時間</th><th>料金</th></tr>
+        <tr>
+          <td>1クラス 90分</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>月2回</td>
+          <td class="price">¥3,800</td>
+        </tr>
+        <tr>
+          <td>月4回</td>
+          <td class="price">¥6,000</td>
+        </tr>
+      </table>
+      <p style="margin-top:1rem;font-size:0.82rem;color:#c4808c;letter-spacing:0.05em;">※ 入会金なし</p>
+      <br>
+      <table class="schedule-table">
+        <tr><th>曜日</th><th>時間</th></tr>
+        <tr><td>土曜日</td><td>10:00 / 13:30 / 15:30</td></tr>
+        <tr><td>日曜日</td><td>10:00 / 13:30 / 15:30</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ITEMS -->
+  <section class="items">
+    <div class="container">
+      <p class="section-label">What to Bring</p>
+      <h2 class="section-title">持ち物</h2>
+      <div class="divider"></div>
+      <ul class="items-list">
+        <li>汚れてもいい服装（エプロンも使用できます）</li>
+        <li>飲み物</li>
+        <li>画材・道具は教室でご用意します</li>
+        <li>作品を持ち帰る袋（大きめのものがあると便利です）</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <div class="container">
+      <p class="section-label">FAQ</p>
+      <h2 class="section-title">よくあるご質問</h2>
+      <div class="divider"></div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <p class="faq-q">絵が得意でなくても大丈夫ですか？</p>
+          <p class="faq-a">もちろん大丈夫です！上手に描くことよりも、自分らしく表現することを大切にしているクラスです。初めての方も安心してご参加ください。</p>
+        </div>
+        <div class="faq-item">
+          <p class="faq-q">何歳から参加できますか？</p>
+          <p class="faq-a">5歳のお子様から参加いただけます。小学生のうちはfor KIDSクラスをおすすめしています。</p>
+        </div>
+        <div class="faq-item">
+          <p class="faq-q">体験レッスンはありますか？</p>
+          <p class="faq-a">はい、無料で体験レッスンを受けていただけます。まずはお気軽にお申し込みください。</p>
+        </div>
+        <div class="faq-item">
+          <p class="faq-q">月の途中から入会できますか？</p>
+          <p class="faq-a">はい、いつでもご入会いただけます。体験レッスン後にご相談ください。</p>
+        </div>
+        <div class="faq-item">
+          <p class="faq-q">振替はできますか？</p>
+          <p class="faq-a">クラスが開催されているところであれば、どのクラスへでも振替が可能です。振替は翌月1ヶ月以内にお願いします。満席の場合はご相談ください。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h2>無料体験、受付中</h2>
+    <p>まずはお気軽に体験レッスンにお越しください。</p>
+    <a href="index.html#contact" class="btn">体験を申し込む</a>
+    <a href="index.html" class="btn-outline">トップに戻る</a>
+  </div>
+
+  <footer>
+    <a href="index.html">TAMANO ART CLASS</a> &nbsp;|&nbsp;
+    愛媛県西予市宇和町卯之町3丁目423
+  </footer>
+
+  <!-- ライトボックス -->
+  <div id="lightbox" onclick="closeLightbox()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:999;align-items:center;justify-content:center;cursor:zoom-out;">
+    <img id="lightbox-img" src="" style="max-width:92vw;max-height:92vh;object-fit:contain;border-radius:4px;box-shadow:0 8px 40px rgba(0,0,0,0.5);">
+  </div>
+  <script>
+  function toggleDropdown(e){
+    e.preventDefault();
+    const menu = document.getElementById('classes-menu');
+    menu.classList.toggle('open');
+  }
+  document.addEventListener('click', function(e){
+    const dropdown = document.querySelector('.nav-dropdown');
+    if(dropdown && !dropdown.contains(e.target)){
+      document.getElementById('classes-menu').classList.remove('open');
+    }
+  });
+  function openLightbox(src){
+    const lb = document.getElementById('lightbox');
+    document.getElementById('lightbox-img').src = src;
+    lb.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox(){
+    document.getElementById('lightbox').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
+  </script>
+
+</body>
+</html>
