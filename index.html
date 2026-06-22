@@ -54,6 +54,7 @@
     .nav-links a:hover { color: #3a3530; }
     /* ドロップダウン */
     .nav-dropdown { position: relative; }
+    .dropdown-arrow { cursor: pointer; user-select: none; }
     .nav-dropdown-menu {
       display: none;
       position: absolute; top: calc(100% + 4px); left: 50%;
@@ -426,7 +427,7 @@
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li class="nav-dropdown">
-        <a href="#classes" onclick="toggleDropdown(event)">Classes ▾</a>
+        <a href="#classes">Classes</a><span class="dropdown-arrow" onclick="toggleDropdown(event)"> ▾</span>
         <div class="nav-dropdown-menu" id="classes-menu">
           <a href="kids.html">for KIDS</a>
           <a href="atelier.html">Atelier Class</a>
@@ -757,7 +758,7 @@
 
   <script>
   function toggleDropdown(e){
-    e.preventDefault();
+    e.stopPropagation();
     const menu = document.getElementById('classes-menu');
     menu.classList.toggle('open');
   }
