@@ -299,6 +299,34 @@
     .contact { background: #e8e5e0; }
     .contact-inner { max-width: 580px; margin: 0 auto; }
     .contact-intro { font-size: 0.88rem; color: #5a524a; margin-bottom: 3rem; line-height: 1.9; }
+    .form-group { margin-bottom: 1.4rem; }
+    .form-group label {
+      display: block;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      color: #7a7068;
+      margin-bottom: 0.45rem;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #c8c2ba;
+      background: #f0ede8;
+      font-family: 'Shippori Mincho', serif;
+      font-size: 0.9rem;
+      color: #3a3530;
+      border-radius: 4px;
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: #d4a5aa; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group textarea { height: 110px; resize: vertical; }
     .btn-submit {
       width: 100%;
       padding: 1.05rem;
@@ -323,6 +351,43 @@
     }
     .form-note a { color: #8fa89a; text-decoration: none; }
     .form-note a:hover { text-decoration: underline; }
+    .class-select-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-top: 0.2rem;
+    }
+    .class-radio {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem 0.8rem;
+      border: 1.5px solid #c8c2ba;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      background: #f0ede8;
+      text-align: center;
+    }
+    .class-radio input[type="radio"] { display: none; }
+    .class-radio span {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: #3a3530;
+      letter-spacing: 0.05em;
+      display: block;
+    }
+    .class-radio small {
+      font-size: 0.68rem;
+      color: #7a7068;
+      margin-top: 0.2rem;
+      display: block;
+    }
+    .class-radio:has(input:checked) {
+      border-color: #d4a5aa;
+      background: #fdf0f2;
+    }
+    .form-group > label > span.req { color: #d4a5aa; margin-left: 2px; }
     footer {
       background: #3a3530;
       color: rgba(255,255,255,0.5);
@@ -634,13 +699,95 @@
         <p class="contact-intro">
           お申し込み後、2〜3日以内に返信をお送りしています。届かない場合は迷惑メールフォルダをご確認ください。それでも見当たらない場合は、LINEよりご連絡いただけますと幸いです。
         </p>
-        <div style="text-align:center; padding: 2rem 0;">
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSdqddwnRlioY3Oc_VrG-DZmFiWrQSBPyGxg4qKgnul1kWogXw/viewform" target="_blank" class="btn-submit" style="display:inline-block;text-decoration:none;">お申し込みフォームへ</a>
-          <p class="form-note" style="margin-top:1.5rem;">
+
+        <form action="https://formsubmit.co/tamanostudio2026@gmail.com" method="POST" id="trial-form">
+          <input type="hidden" name="_subject" value="【TAMANO ART CLASS】無料体験お申し込み">
+          <input type="hidden" name="_next" value="https://tamano-art-class.com/#contact">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+
+          <div class="form-group">
+            <label>お名前 <span class="req">*</span></label>
+            <input type="text" name="お名前" required placeholder="山田 花子">
+          </div>
+
+          <div class="form-group">
+            <label>メールアドレス <span class="req">*</span></label>
+            <input type="email" name="メールアドレス" required placeholder="example@email.com">
+          </div>
+
+          <div class="form-group">
+            <label>ご希望のクラス <span class="req">*</span></label>
+            <div class="class-select-row">
+              <label class="class-radio">
+                <input type="radio" name="クラス" value="for KIDS（5歳〜小学生）" required onchange="updateTimes()">
+                <span>for KIDS</span>
+                <small>5歳〜小学生</small>
+              </label>
+              <label class="class-radio">
+                <input type="radio" name="クラス" value="Atelier Class（中学生・高校生・大人）" onchange="updateTimes()">
+                <span>Atelier Class</span>
+                <small>中学生・高校生・大人</small>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>ご希望の曜日 <span class="req">*</span></label>
+              <select name="希望曜日" id="day-select" required onchange="updateTimes()">
+                <option value="">選択してください</option>
+                <option value="土曜日">土曜日</option>
+                <option value="日曜日">日曜日</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>ご希望の時間 <span class="req">*</span></label>
+              <select name="希望時間" id="time-select" required>
+                <option value="">クラスと曜日を先に選択</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>ご質問・メッセージ</label>
+            <textarea name="メッセージ" placeholder="ご質問などあればお書きください。"></textarea>
+          </div>
+
+          <button type="submit" class="btn-submit">送信する</button>
+          <p class="form-note">
             返信が届かない場合は<br>
             <a href="https://line.me/R/ti/p/@tht3126c" target="_blank">LINE よりご連絡ください</a>
           </p>
-        </div>
+        </form>
+
+        <script>
+        function updateTimes() {
+          const classVal = document.querySelector('input[name="クラス"]:checked')?.value || '';
+          const dayVal = document.getElementById('day-select').value;
+          const timeSelect = document.getElementById('time-select');
+          timeSelect.innerHTML = '';
+          if (!classVal || !dayVal) {
+            timeSelect.innerHTML = '<option value="">クラスと曜日を先に選択</option>';
+            return;
+          }
+          let times = [];
+          if (classVal.includes('KIDS')) {
+            times = ['10:00', '13:30', '15:30'];
+          } else {
+            times = dayVal === '土曜日' ? ['15:30', '19:00'] : ['15:30'];
+          }
+          const ph = document.createElement('option');
+          ph.value = ''; ph.textContent = '選択してください';
+          timeSelect.appendChild(ph);
+          times.forEach(t => {
+            const opt = document.createElement('option');
+            opt.value = t; opt.textContent = t;
+            timeSelect.appendChild(opt);
+          });
+        }
+        </script>
+
       </div>
     </div>
   </section>
