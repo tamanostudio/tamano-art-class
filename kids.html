@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
@@ -396,9 +396,17 @@
         return { key: ym + '-' + period, year: d.getFullYear(), month: d.getMonth()+1, period };
       }
     }
-    const data = JSON.parse(localStorage.getItem('tamano_weekly') || '{}');
+    const WEEKLY_THEMES = {
+      '2026-06-34': {
+        theme:  'ビー玉ゲームを作ろう！',
+        detail: 'パンチングボード（有孔ボード）を使って、ビー玉ゲームを作ります。トンカチも使うから、ちょっと難しいけどがんばろうね。',
+        photo:  'IMG_3871.jpg'
+      }
+      // 追加例:
+      // '2026-07-12': { theme: '...', detail: '...', photo: '' },
+    };
     const cur = getCurrentPeriodKey();
-    const info = (data[cur.key] || {}).kids || {};
+    const info = WEEKLY_THEMES[cur.key] || {};
     const w = cur.period === '12' ? '第1・2週' : '第3・4週';
     document.getElementById('kids-period').textContent = cur.year + '年' + cur.month + '月 ' + w;
     const wrap = document.getElementById('kids-weekly');
