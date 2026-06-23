@@ -343,6 +343,19 @@
     </div>
   </section>
   <script>
+  // ── 今週のテーマ設定 ──────────────────────────────────────
+  // テーマを変更するときはここを更新してください
+  const WEEKLY_THEMES = {
+    '2026-06-34': {
+      theme: '',        // 例: 'モネの色彩 ― 光と水の表現'
+      detail: '',       // 例: '印象派の巨匠クロード・モネの作品を通して...'
+      photo:  ''        // 例: 'アトリエクラス/IMG_4346_fixed.jpg'
+    }
+    // 追加例:
+    // '2026-07-12': { theme: '...', detail: '...', photo: '' },
+  };
+  // ────────────────────────────────────────────────────────────
+
   (function(){
     function getCurrentPeriodKey(){
       const now = new Date();
@@ -356,14 +369,13 @@
         return { key: ym + '-' + period, year: d.getFullYear(), month: d.getMonth()+1, period };
       }
     }
-    const data = JSON.parse(localStorage.getItem('tamano_weekly') || '{}');
     const cur = getCurrentPeriodKey();
-    const info = (data[cur.key] || {}).atelier || {};
+    const info = WEEKLY_THEMES[cur.key] || {};
     const w = cur.period === '12' ? '第1・2週' : '第3・4週';
     document.getElementById('atelier-period').textContent = cur.year + '年' + cur.month + '月 ' + w;
     const wrap = document.getElementById('atelier-weekly');
     let html = '';
-    if(info.photo) html += `<img src="${info.photo}" alt="今週のテーマ" onclick="openLightbox(this.src)" style="width:100%;height:220px;object-fit:cover;display:block;filter:brightness(0.88);cursor:zoom-in;">`;
+    if(info.photo) html += `<img src="${info.photo}" alt="今週のテーマ" style="width:100%;height:220px;object-fit:cover;display:block;filter:brightness(0.88);">`;
     html += `<div style="padding:1.8rem 2rem;">`;
     if(info.theme){
       html += `<h3 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;color:#3a3530;margin-bottom:0.8rem;">${info.theme}</h3>`;
@@ -468,7 +480,6 @@
     愛媛県西予市宇和町卯之町3丁目423
   </footer>
 
-  <!-- ライトボックス -->
   <div id="lightbox" onclick="closeLightbox()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:999;align-items:center;justify-content:center;cursor:zoom-out;">
     <img id="lightbox-img" src="" style="max-width:92vw;max-height:92vh;object-fit:contain;border-radius:4px;box-shadow:0 8px 40px rgba(0,0,0,0.5);">
   </div>
