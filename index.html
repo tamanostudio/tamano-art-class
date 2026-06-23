@@ -630,19 +630,30 @@
 
   <script>
   // ══════════════════════════════════════════════════
-  // 空き情報（○以外の場合だけ記入してください）
-  // Claudeに「○月○日のKIDS 10:00を満席に」と伝えると更新します
+  // 空き情報設定（ここを書き換えて更新してください）
   //
-  // キー形式: 'YYYY-MM-DD'
-  // 時間キー: k10=10:00 k13=13:30 k15=15:30（KIDS）
-  //           a15=15:30 a19=19:00（Atelier）
-  // 値: '△'（残りわずか） '×'（満席） '休'（クラスなし）
+  // 記入のない時間帯は自動で "○"（空きあり）になります。
+  // 「残りわずか（△）」や「満席（×）」の時間だけ書いてください。
+  // クラスがない日（祝日など）は "休" と書いてください。
+  //
+  // 時間帯のキー:
+  //   for KIDS   → "k10"(10:00) "k13"(13:30) "k15"(15:30)
+  //   Atelier    → "a15"(15:30) "a19"(19:00) ※土曜のみ a19 あり
+  //
+  // 値: "○" "△" "×" "休"
   // ══════════════════════════════════════════════════
   const EXCEPTIONS = {
-    // 例: '2026-07-05': { k10: '×', a19: '△' },
+    '2026-06-27': { k10: '△' },
+    '2026-06-28': { k10: '△' },
+    '2026-07-04': { k10: '×' },
+    '2026-07-05': { k10: '△' },
+    '2026-07-11': { k10: '△' },
+    '2026-07-18': { k10: '×' },
+    '2026-07-19': { k10: '△' },
+    '2026-07-25': { k10: '△' },
   };
 
-  // クラス時間の定義
+  // クラス時間の定義（endH/endM = 終了時刻）
   const KIDS_TIMES  = [
     { key:'k10', label:'10:00', endH:11, endM:30 },
     { key:'k13', label:'13:30', endH:15, endM:0  },
@@ -656,6 +667,7 @@
     { key:'a15', label:'15:30', endH:17, endM:30 },
   ];
 
+  // その日時のクラスが終了しているか判定
   function isFinished(year, month, day, endH, endM){
     const now = new Date();
     const end = new Date(year, month, day, endH, endM);
@@ -679,8 +691,9 @@
 
     times.forEach(t => {
       const stored = (dateEx && dateEx[t.key]) || '○';
-      if(stored === '休') return;
+      if(stored === '休') return; // 休みは非表示
 
+      // 終了時刻を過ぎていたら自動で×
       const finished = isFinished(year, month, day, t.endH, t.endM);
       const raw = finished ? '×' : stored;
 
@@ -713,6 +726,7 @@
     const grid = document.getElementById('cal-grid');
     grid.innerHTML = '';
 
+    // ヘッダー（土曜を左、日曜を右）
     const hSat = document.createElement('div');
     hSat.className = 'cal-head cal-sat'; hSat.textContent = '土曜日';
     grid.appendChild(hSat);
@@ -720,6 +734,7 @@
     hSun.className = 'cal-head cal-sun'; hSun.textContent = '日曜日';
     grid.appendChild(hSun);
 
+    // 月内の土日だけ収集
     const sundays = [], saturdays = [];
     for(let d=1; d<=daysInMonth; d++){
       const dow = new Date(year, month, d).getDay();
@@ -727,6 +742,7 @@
       if(dow===6) saturdays.push(d);
     }
 
+    // 行数は多い方に合わせる
     const rows = Math.max(sundays.length, saturdays.length);
 
     function makeCell(d, isSat){
@@ -757,6 +773,7 @@
     }
 
     for(let i=0; i<rows; i++){
+      // 土曜列
       if(i < saturdays.length){
         grid.appendChild(makeCell(saturdays[i], true));
       } else {
@@ -764,6 +781,7 @@
         blank.className = 'cal-day cal-blank';
         grid.appendChild(blank);
       }
+      // 日曜列
       if(i < sundays.length){
         grid.appendChild(makeCell(sundays[i], false));
       } else {
@@ -788,6 +806,7 @@
     const menu = document.getElementById('classes-menu');
     menu.classList.toggle('open');
   }
+  // メニュー外をタップしたら閉じる
   document.addEventListener('click', function(e){
     const dropdown = document.querySelector('.nav-dropdown');
     if(!dropdown.contains(e.target)){
@@ -935,12 +954,15 @@
     <p>たまのアート教室</p>
     <p style="margin-top: 0.6rem;">愛媛県西予市宇和町卯之町3丁目423</p>
     <p><a href="mailto:tamanostudio2026@gmail.com">tamanostudio2026@gmail.com</a></p>
+    <!-- SNS アイコン -->
     <div style="display:flex;justify-content:center;gap:1.2rem;margin-top:1.4rem;">
+      <!-- YouTube -->
       <a href="https://www.youtube.com/@TAMANO_ART_CLASS" target="_blank" title="YouTube" style="color:rgba(255,255,255,0.45);transition:color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,0.85)'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
           <path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-.9C16.8 5 12 5 12 5s-4.8 0-7 .1c-.4.1-1.2.1-2 .9-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.2.8C6.8 19 12 19 12 19s4.8 0 7-.2c.4-.1 1.2-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.7 14.5V9.1l5.6 2.7-5.6 2.7z"/>
         </svg>
       </a>
+      <!-- Instagram (kids) -->
       <a href="https://www.instagram.com/tamano_art_class" target="_blank" title="Instagram (for KIDS)" style="display:flex;flex-direction:column;align-items:center;gap:3px;color:rgba(255,255,255,0.45);transition:color 0.2s;text-decoration:none;" onmouseover="this.style.color='rgba(255,255,255,0.85)'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
           <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
@@ -949,6 +971,7 @@
         </svg>
         <span style="font-family:'Cormorant Garamond',serif;font-size:0.58rem;letter-spacing:0.08em;">KIDS</span>
       </a>
+      <!-- Instagram (atelier) -->
       <a href="https://www.instagram.com/tamano_atelier_class" target="_blank" title="Instagram (Atelier Class)" style="display:flex;flex-direction:column;align-items:center;gap:3px;color:rgba(255,255,255,0.45);transition:color 0.2s;text-decoration:none;" onmouseover="this.style.color='rgba(255,255,255,0.85)'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
           <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
