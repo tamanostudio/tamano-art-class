@@ -8,6 +8,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Shippori+Mincho:wght@400;500&display=swap" rel="stylesheet">
   <style>
+    /* ── カラーパレット（ロゴイラストより）──
+       背景:    #e8e5e0  ウォームグレー
+       サブ背景: #dedad4  少し濃いグレー
+       テキスト: #3a3530  ウォームダーク
+       アクセント1: #d4a5aa ダスティローズ
+       アクセント2: #8fa89a セージグリーン
+       アクセント3: #b8afc8 ラベンダー
+       ダーク:  #3a3530
+    ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -16,6 +25,8 @@
       color: #3a3530;
       line-height: 1.85;
     }
+
+    /* ── NAV ── */
     nav {
       position: fixed; top: 0; width: 100%; z-index: 100;
       padding: 1.1rem 2.5rem;
@@ -41,6 +52,7 @@
       transition: color 0.25s;
     }
     .nav-links a:hover { color: #3a3530; }
+    /* ドロップダウン */
     .nav-dropdown { position: relative; }
     .dropdown-arrow { cursor: pointer; user-select: none; }
     .nav-dropdown-menu {
@@ -64,6 +76,8 @@
       white-space: nowrap;
     }
     .nav-dropdown-menu a:hover { background: rgba(212,165,170,0.12); }
+
+    /* ── HERO ── */
     .hero {
       height: 100vh;
       position: relative;
@@ -100,6 +114,8 @@
       0%, 100% { opacity: 0.5; transform: translateX(-50%) translateY(0); }
       50% { opacity: 1; transform: translateX(-50%) translateY(7px); }
     }
+
+    /* ── SHARED ── */
     section { padding: 7rem 2rem; }
     .container { max-width: 980px; margin: 0 auto; }
     .section-label {
@@ -123,6 +139,8 @@
       background: #d4a5aa;
       margin: 1.8rem 0;
     }
+
+    /* ── ABOUT ── */
     .about { background: #e8e5e0; }
     .about-grid {
       display: grid;
@@ -137,6 +155,8 @@
     }
     .about-image { border-radius: 6px; overflow: hidden; }
     .about-image img { width: 100%; height: 500px; object-fit: cover; display: block; }
+
+    /* ── QUOTE ── */
     .quote-section {
       background: #b8afc8;
       color: white;
@@ -159,6 +179,8 @@
       letter-spacing: 0.22em;
       color: rgba(255,255,255,0.6);
     }
+
+    /* ── CLASSES ── */
     .classes { background: #dedad4; }
     .classes-grid {
       display: grid;
@@ -191,6 +213,8 @@
       color: #3a3530;
     }
     .class-card-body p { font-size: 0.87rem; color: #5a524a; line-height: 1.95; }
+
+    /* ── SCHEDULE ── */
     .schedule { background: #e8e5e0; }
     .schedule-grid {
       display: grid;
@@ -224,6 +248,8 @@
       background: #dedad4;
       border-radius: 6px;
     }
+
+    /* ── CALENDAR ── */
     .calendar-section { background: #dedad4; }
     .cal-nav {
       display: flex; align-items: center; justify-content: center;
@@ -281,6 +307,8 @@
     @media(max-width:600px){
       .cal-slot { font-size: 0.62rem; }
     }
+
+    /* ── GALLERY ── */
     .gallery { background: #dedad4; }
     .gallery-grid {
       display: grid;
@@ -296,6 +324,8 @@
       transition: transform 0.45s ease;
     }
     .gallery-item:hover img { transform: scale(1.05); }
+
+    /* ── CONTACT ── */
     .contact { background: #e8e5e0; }
     .contact-inner { max-width: 580px; margin: 0 auto; }
     .contact-intro { font-size: 0.88rem; color: #5a524a; margin-bottom: 3rem; line-height: 1.9; }
@@ -388,6 +418,8 @@
       background: #fdf0f2;
     }
     .form-group > label > span.req { color: #d4a5aa; margin-left: 2px; }
+
+    /* ── FOOTER ── */
     footer {
       background: #3a3530;
       color: rgba(255,255,255,0.5);
@@ -409,6 +441,8 @@
       font-size: 0.7rem;
       color: rgba(255,255,255,0.25);
     }
+
+    /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       .nav-links { display: none; }
       section { padding: 5rem 1.5rem; }
@@ -424,6 +458,7 @@
 </head>
 <body>
 
+  <!-- ── NAVIGATION ── -->
   <nav>
     <a class="nav-logo" href="#">TAMANO ART CLASS</a>
     <ul class="nav-links">
@@ -441,6 +476,7 @@
     </ul>
   </nav>
 
+  <!-- ── HERO ── -->
   <section class="hero">
     <div class="hero-bg"></div>
     <div class="hero-content">
@@ -450,6 +486,7 @@
     <div class="hero-scroll">scroll ↓</div>
   </section>
 
+  <!-- ── ABOUT ── -->
   <section class="about" id="about">
     <div class="container">
       <div class="about-grid">
@@ -469,11 +506,14 @@
     </div>
   </section>
 
+
+  <!-- ── CLASSES ── -->
   <section class="classes" id="classes">
     <div class="container">
       <p class="section-label">Our Classes</p>
       <h2 class="section-title">クラスについて</h2>
       <div class="classes-grid">
+
         <div class="class-card">
           <img class="class-card-img" src="IMG_3647.jpg" alt="for KIDS クラスの様子">
           <div class="class-card-body">
@@ -486,6 +526,7 @@
             <a href="kids.html" style="display:inline-block;margin-top:0.5rem;font-family:'Cormorant Garamond',serif;font-size:0.82rem;letter-spacing:0.2em;color:#8fa89a;text-decoration:none;border-bottom:1px solid #8fa89a;padding-bottom:2px;">詳細を見る →</a>
           </div>
         </div>
+
         <div class="class-card">
           <img class="class-card-img" src="アトリエクラス/IMG_4346_fixed.jpg" alt="Atelier Classの様子">
           <div class="class-card-body">
@@ -498,36 +539,72 @@
             <a href="atelier.html" style="display:inline-block;margin-top:0.5rem;font-family:'Cormorant Garamond',serif;font-size:0.82rem;letter-spacing:0.2em;color:#8fa89a;text-decoration:none;border-bottom:1px solid #8fa89a;padding-bottom:2px;">詳細を見る →</a>
           </div>
         </div>
+
       </div>
     </div>
   </section>
 
+  <!-- ── SCHEDULE & PRICE ── -->
   <section class="schedule" id="schedule">
     <div class="container">
       <p class="section-label">Schedule & Price</p>
       <h2 class="section-title">スケジュールと料金</h2>
       <div class="schedule-grid">
+
         <div class="schedule-block">
           <h3>for KIDS</h3>
-          <div class="schedule-row"><span>クラス時間</span><span>90分</span></div>
-          <div class="schedule-row"><span>月2回</span><span class="price-highlight">¥3,800</span></div>
-          <div class="schedule-row"><span>月4回</span><span class="price-highlight">¥6,000</span></div>
-          <div class="schedule-row"><span>土曜日</span><span>10:00 / 13:30 / 15:30</span></div>
-          <div class="schedule-row"><span>日曜日</span><span>10:00 / 13:30 / 15:30</span></div>
+          <div class="schedule-row">
+            <span>クラス時間</span>
+            <span>90分</span>
+          </div>
+          <div class="schedule-row">
+            <span>月2回</span>
+            <span class="price-highlight">¥3,800</span>
+          </div>
+          <div class="schedule-row">
+            <span>月4回</span>
+            <span class="price-highlight">¥6,000</span>
+          </div>
+          <div class="schedule-row">
+            <span>土曜日</span>
+            <span>10:00 / 13:30 / 15:30</span>
+          </div>
+          <div class="schedule-row">
+            <span>日曜日</span>
+            <span>10:00 / 13:30 / 15:30</span>
+          </div>
         </div>
+
         <div class="schedule-block">
           <h3>Atelier Class</h3>
-          <div class="schedule-row"><span>クラス時間</span><span>120分</span></div>
-          <div class="schedule-row"><span>月2回</span><span class="price-highlight">¥4,400</span></div>
-          <div class="schedule-row"><span>月4回</span><span class="price-highlight">¥7,700</span></div>
-          <div class="schedule-row"><span>土曜日</span><span>15:30 / 19:00</span></div>
-          <div class="schedule-row"><span>日曜日</span><span>15:30</span></div>
+          <div class="schedule-row">
+            <span>クラス時間</span>
+            <span>120分</span>
+          </div>
+          <div class="schedule-row">
+            <span>月2回</span>
+            <span class="price-highlight">¥4,400</span>
+          </div>
+          <div class="schedule-row">
+            <span>月4回</span>
+            <span class="price-highlight">¥7,700</span>
+          </div>
+          <div class="schedule-row">
+            <span>土曜日</span>
+            <span>15:30 / 19:00</span>
+          </div>
+          <div class="schedule-row">
+            <span>日曜日</span>
+            <span>15:30</span>
+          </div>
         </div>
+
       </div>
       <p class="schedule-note">※ 無料体験レッスンを随時受け付けています。下記フォームよりお気軽にお申し込みください。</p>
     </div>
   </section>
 
+  <!-- ── CALENDAR ── -->
   <section class="calendar-section" id="calendar">
     <div class="container">
       <p class="section-label">Calendar</p>
@@ -552,8 +629,24 @@
   </section>
 
   <script>
+  // ══════════════════════════════════════════════════
+  // 空き情報設定（ここを書き換えて更新してください）
+  //
+  // 記入のない時間帯は自動で "○"（空きあり）になります。
+  // 「残りわずか（△）」や「満席（×）」の時間だけ書いてください。
+  // クラスがない日（祝日など）は "休" と書いてください。
+  //
+  // 時間帯のキー:
+  //   for KIDS   → "k10"(10:00) "k13"(13:30) "k15"(15:30)
+  //   Atelier    → "a15"(15:30) "a19"(19:00) ※土曜のみ a19 あり
+  //
+  // 値: "○" "△" "×" "休"
+  // ══════════════════════════════════════════════════
+  // localStorageから空き情報を読み込む（admin.htmlで設定）
   const saved = localStorage.getItem('tamano_cal_exceptions');
   const exceptions = saved ? JSON.parse(saved) : {};
+
+  // クラス時間の定義（endH/endM = 終了時刻）
   const KIDS_TIMES  = [
     { key:'k10', label:'10:00', endH:11, endM:30 },
     { key:'k13', label:'13:30', endH:15, endM:0  },
@@ -566,92 +659,137 @@
   const ATELIER_SUN = [
     { key:'a15', label:'15:30', endH:17, endM:30 },
   ];
+
+  // その日時のクラスが終了しているか判定
   function isFinished(year, month, day, endH, endM){
     const now = new Date();
     const end = new Date(year, month, day, endH, endM);
     return now >= end;
   }
+
   let current = new Date();
   current.setDate(1);
+
   function pad(n){ return String(n).padStart(2,'0'); }
+
   function statusClass(s){
     if(s==='△') return 's-sankaku';
     if(s==='×') return 's-batsu';
     return 's-maru';
   }
+
   function makeSlotGroup(times, slotCls, dateEx, year, month, day) {
     const group = document.createElement('div');
     group.className = 'cal-group';
+
     times.forEach(t => {
       const stored = (dateEx && dateEx[t.key]) || '○';
-      if(stored === '休') return;
+      if(stored === '休') return; // 休みは非表示
+
+      // 終了時刻を過ぎていたら自動で×
       const finished = isFinished(year, month, day, t.endH, t.endM);
       const raw = finished ? '×' : stored;
+
       const row = document.createElement('div');
       row.className = 'cal-slot ' + slotCls;
       if(finished) row.style.opacity = '0.45';
+
       const timeEl = document.createElement('span');
       timeEl.className = 'cal-slot-time';
       timeEl.textContent = t.label;
+
       const stEl = document.createElement('span');
       stEl.className = 'cal-slot-status ' + statusClass(raw);
       stEl.textContent = raw;
+
       row.appendChild(timeEl);
       row.appendChild(stEl);
       group.appendChild(row);
     });
     return group;
   }
+
   function renderCalendar() {
     const year = current.getFullYear();
     const month = current.getMonth();
-    document.getElementById('cal-title').textContent = year + '年 ' + (month+1) + '月';
+    document.getElementById('cal-title').textContent =
+      year + '年 ' + (month+1) + '月';
+
     const daysInMonth = new Date(year, month+1, 0).getDate();
     const grid = document.getElementById('cal-grid');
     grid.innerHTML = '';
+
+    // ヘッダー（土曜を左、日曜を右）
     const hSat = document.createElement('div');
     hSat.className = 'cal-head cal-sat'; hSat.textContent = '土曜日';
     grid.appendChild(hSat);
     const hSun = document.createElement('div');
     hSun.className = 'cal-head cal-sun'; hSun.textContent = '日曜日';
     grid.appendChild(hSun);
+
+    // 月内の土日だけ収集
     const sundays = [], saturdays = [];
     for(let d=1; d<=daysInMonth; d++){
       const dow = new Date(year, month, d).getDay();
       if(dow===0) sundays.push(d);
       if(dow===6) saturdays.push(d);
     }
+
+    // 行数は多い方に合わせる
     const rows = Math.max(sundays.length, saturdays.length);
+
     function makeCell(d, isSat){
       const key = year+'-'+pad(month+1)+'-'+pad(d);
       const ex = exceptions[key];
       const cell = document.createElement('div');
       cell.className = 'cal-day ' + (isSat ? 'cal-sat' : 'cal-sun');
+
       const num = document.createElement('span');
       num.className = 'cal-num';
       num.textContent = d + '日';
       cell.appendChild(num);
+
       const kLbl = document.createElement('div');
       kLbl.className = 'cal-group-label lbl-kids';
       kLbl.textContent = 'KIDS';
       cell.appendChild(kLbl);
       cell.appendChild(makeSlotGroup(KIDS_TIMES, 'slot-kids', ex, year, month, d));
+
       const aLbl = document.createElement('div');
       aLbl.className = 'cal-group-label lbl-atelier';
       aLbl.textContent = 'Atelier';
       cell.appendChild(aLbl);
       const atelierTimes = isSat ? ATELIER_SAT : ATELIER_SUN;
       cell.appendChild(makeSlotGroup(atelierTimes, 'slot-atelier', ex, year, month, d));
+
       return cell;
     }
+
     for(let i=0; i<rows; i++){
-      if(i < saturdays.length){ grid.appendChild(makeCell(saturdays[i], true)); }
-      else { const blank = document.createElement('div'); blank.className = 'cal-day cal-blank'; grid.appendChild(blank); }
-      if(i < sundays.length){ grid.appendChild(makeCell(sundays[i], false)); }
-      else { const blank = document.createElement('div'); blank.className = 'cal-day cal-blank'; grid.appendChild(blank); }
+      // 土曜列
+      if(i < saturdays.length){
+        grid.appendChild(makeCell(saturdays[i], true));
+      } else {
+        const blank = document.createElement('div');
+        blank.className = 'cal-day cal-blank';
+        grid.appendChild(blank);
+      }
+      // 日曜列
+      if(i < sundays.length){
+        grid.appendChild(makeCell(sundays[i], false));
+      } else {
+        const blank = document.createElement('div');
+        blank.className = 'cal-day cal-blank';
+        grid.appendChild(blank);
+      }
     }
   }
-  function changeMonth(dir){ current.setMonth(current.getMonth()+dir); renderCalendar(); }
+
+  function changeMonth(dir){
+    current.setMonth(current.getMonth()+dir);
+    renderCalendar();
+  }
+
   renderCalendar();
   </script>
 
@@ -661,6 +799,7 @@
     const menu = document.getElementById('classes-menu');
     menu.classList.toggle('open');
   }
+  // メニュー外をタップしたら閉じる
   document.addEventListener('click', function(e){
     const dropdown = document.querySelector('.nav-dropdown');
     if(!dropdown.contains(e.target)){
@@ -669,6 +808,7 @@
   });
   </script>
 
+  <!-- ── GALLERY ── -->
   <section class="gallery" id="gallery">
     <div class="container">
       <p class="section-label">Gallery</p>
@@ -690,6 +830,7 @@
     </div>
   </section>
 
+  <!-- ── CONTACT ── -->
   <section class="contact" id="contact">
     <div class="container">
       <div class="contact-inner">
@@ -706,9 +847,15 @@
           <input type="hidden" name="_captcha" value="false">
           <input type="hidden" name="_template" value="table">
 
-          <div class="form-group">
-            <label>お名前 <span class="req">*</span></label>
-            <input type="text" name="お名前" required placeholder="山田 花子">
+          <div class="form-row">
+            <div class="form-group">
+              <label>お名前 <span class="req">*</span></label>
+              <input type="text" name="お名前" required placeholder="山田 花子">
+            </div>
+            <div class="form-group">
+              <label>ふりがな <span class="req">*</span></label>
+              <input type="text" name="ふりがな" required placeholder="やまだ はなこ">
+            </div>
           </div>
 
           <div class="form-group">
@@ -767,19 +914,22 @@
           const dayVal = document.getElementById('day-select').value;
           const timeSelect = document.getElementById('time-select');
           timeSelect.innerHTML = '';
+
           if (!classVal || !dayVal) {
             timeSelect.innerHTML = '<option value="">クラスと曜日を先に選択</option>';
             return;
           }
+
           let times = [];
           if (classVal.includes('KIDS')) {
             times = ['10:00', '13:30', '15:30'];
           } else {
             times = dayVal === '土曜日' ? ['15:30', '19:00'] : ['15:30'];
           }
-          const ph = document.createElement('option');
-          ph.value = ''; ph.textContent = '選択してください';
-          timeSelect.appendChild(ph);
+
+          const placeholder = document.createElement('option');
+          placeholder.value = ''; placeholder.textContent = '選択してください';
+          timeSelect.appendChild(placeholder);
           times.forEach(t => {
             const opt = document.createElement('option');
             opt.value = t; opt.textContent = t;
@@ -787,22 +937,25 @@
           });
         }
         </script>
-
       </div>
     </div>
   </section>
 
+  <!-- ── FOOTER ── -->
   <footer>
     <div class="footer-logo">TAMANO ART CLASS</div>
     <p>たまのアート教室</p>
     <p style="margin-top: 0.6rem;">愛媛県西予市宇和町卯之町3丁目423</p>
     <p><a href="mailto:tamanostudio2026@gmail.com">tamanostudio2026@gmail.com</a></p>
+    <!-- SNS アイコン -->
     <div style="display:flex;justify-content:center;gap:1.2rem;margin-top:1.4rem;">
+      <!-- YouTube -->
       <a href="https://www.youtube.com/@TAMANO_ART_CLASS" target="_blank" title="YouTube" style="color:rgba(255,255,255,0.45);transition:color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,0.85)'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
           <path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-.9C16.8 5 12 5 12 5s-4.8 0-7 .1c-.4.1-1.2.1-2 .9-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.2.8C6.8 19 12 19 12 19s4.8 0 7-.2c.4-.1 1.2-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.7 14.5V9.1l5.6 2.7-5.6 2.7z"/>
         </svg>
       </a>
+      <!-- Instagram (kids) -->
       <a href="https://www.instagram.com/tamano_art_class" target="_blank" title="Instagram (for KIDS)" style="display:flex;flex-direction:column;align-items:center;gap:3px;color:rgba(255,255,255,0.45);transition:color 0.2s;text-decoration:none;" onmouseover="this.style.color='rgba(255,255,255,0.85)'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
           <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
@@ -811,6 +964,7 @@
         </svg>
         <span style="font-family:'Cormorant Garamond',serif;font-size:0.58rem;letter-spacing:0.08em;">KIDS</span>
       </a>
+      <!-- Instagram (atelier) -->
       <a href="https://www.instagram.com/tamano_atelier_class" target="_blank" title="Instagram (Atelier Class)" style="display:flex;flex-direction:column;align-items:center;gap:3px;color:rgba(255,255,255,0.45);transition:color 0.2s;text-decoration:none;" onmouseover="this.style.color='rgba(255,255,255,0.85)'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
           <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
