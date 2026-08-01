@@ -427,7 +427,20 @@
     }
 
     // ── 今週のテーマ 管理 ──────────────────────────
-    const weeklyData = JSON.parse(localStorage.getItem('tamano_weekly') || '{}');
+    // デフォルトシードデータ（localStorageに未入力の期間を補完）
+    const WEEKLY_SEED = {
+      '2026-07-34': {
+        kids:    { theme: '提灯', detail: '暑い夏は怖〜い話で涼もう！まずは北斎の百物語浮世絵「皿屋敷」を塗り絵で。そのあとは本物のランタンにペイントして、自分だけのオリジナル提灯を作るよ。どんな提灯になるかな？', photo: 'キッズクラス/hokusai_sarayashiki.png' },
+        atelier: { theme: 'RCD課題：フェルメール 真珠の耳飾りの少女', detail: '第2回RCD課題。大阪・中之島美術館で開催中のフェルメール展「真珠の耳飾りの少女」にちなんだ作品を制作します。この絵をどう解釈し、自分の表現に落とし込むか——じっくり向き合ってみてください。', photo: 'アトリエクラス/vermeer_pearl.jpg' }
+      },
+      '2026-08-12': {
+        kids:    { theme: 'モールイソギンチャク', detail: 'モールとビーズで、カラフルなイソギンチャクを作ろう！お魚や貝や海の生き物たちもたくさん作ってね。お楽しみに〜', photo: 'キッズクラス/IMG_4281.JPG' },
+        atelier: { theme: 'RCD課題：フェルメール 真珠の耳飾りの少女', detail: '第2回RCD課題。大阪・中之島美術館で開催中のフェルメール展「真珠の耳飾りの少女」にちなんだ作品を制作します。この絵をどう解釈し、自分の表現に落とし込むか——じっくり向き合ってみてください。', photo: 'アトリエクラス/vermeer_pearl.jpg' }
+      }
+    };
+    const _stored = JSON.parse(localStorage.getItem('tamano_weekly') || '{}');
+    const weeklyData = {..._stored};
+    Object.entries(WEEKLY_SEED).forEach(([k,v]) => { if(!weeklyData[k]) weeklyData[k] = v; });
 
     // 今日から6ヶ月先までの2週ごと期間リストを生成
     function buildPeriods(){
